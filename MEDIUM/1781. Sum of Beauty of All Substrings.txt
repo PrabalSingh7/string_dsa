@@ -1,0 +1,101 @@
+1781. Sum of Beauty of All Substrings
+Medium
+610
+132
+Companies
+The beauty of a string is the difference in frequencies between the most frequent and least frequent characters.
+
+For example, the beauty of "abaacc" is 3 - 1 = 2.
+Given a string s, return the sum of beauty of all of its substrings.
+
+ 
+
+Example 1:
+
+Input: s = "aabcb"
+Output: 5
+Explanation: The substrings with non-zero beauty are ["aab","aabc","aabcb","abcb","bcb"], each with beauty equal to 1.
+Example 2:
+
+Input: s = "aabcbaa"
+Output: 17
+ 
+
+Constraints:
+
+1 <= s.length <= 500
+s consists of only lowercase English letters.
+Accepted
+20.6K
+Submissions
+33.8K
+Acceptance Rate
+61.0%
+
+
+
+✔🤞 C++ || 🙌explained approach & 👀commented code || ⛳ Greedy || Counting || hashmap || prefix
+_prabal_singh_
+100 Days Badge 2022
+15
+a few seconds ago
+Intuition
+Greedy + Prefix sum
+
+Approach
+We will find out the number of characters before & including current index for each character in string.
+T(O) = O(N*26) && S(O) = O(N*26)
+Then for each possible substring we will find the most frequent and least frequent value & and evaluate its beauty ANd add to the count variable.
+T(O) = O(N*N*26) && S(O) = O(1)
+download (2).jfif
+
+Complexity
+Time complexity : O(nn26)
+Space complexity : O(1)
+Code
+class Solution {
+public:
+    int beautySum(string s) {
+        //helping variables
+        int n = s.size();
+        int count= 0;
+        vector<vector<int>> dp ;
+        vector<int> util (26,0);
+
+        //preparing prefix sum 2d array 
+        for(int i=0; i<n; i++)  {
+            char ch = s[i];
+            util[ch-'a'] ++;
+            dp.push_back(util);
+        }
+
+
+        //processing all possible substrings
+        for(int i=0; i<n; i++)  {
+            for(int j=i+1; j<n; j++)    {
+                int mx=-1e8, mn=1e8;
+                //finding least & most frequent 
+                for(int c=0; c<26; c++) {
+                    int prev = i-1>=0 ? dp[i-1][c] : 0;
+                    int curr = dp[j][c];
+                    int val = curr - prev;
+
+                    mx = max(mx,val);
+                    if(val!=0)
+                        mn = min(mn,val);
+                }
+                
+                //evaluating beauty of current substring
+                if(mn>0 && mn!=1e8 && mx!=-1e8)    
+                    count += mx-mn;
+            }
+        }
+
+        return count;
+    }
+};
+download (1).jfif
+
+0
+0
+
