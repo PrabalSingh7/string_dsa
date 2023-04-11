@@ -1,0 +1,85 @@
+692. Top K Frequent Words
+Medium
+6.9K
+323
+Companies
+Given an array of strings words and an integer k, return the k most frequent strings.
+
+Return the answer sorted by the frequency from highest to lowest. Sort the words with the same frequency by their lexicographical order.
+
+ 
+
+Example 1:
+
+Input: words = ["i","love","leetcode","i","love","coding"], k = 2
+Output: ["i","love"]
+Explanation: "i" and "love" are the two most frequent words.
+Note that "i" comes before "love" due to a lower alphabetical order.
+Example 2:
+
+Input: words = ["the","day","is","sunny","the","the","the","sunny","is","is"], k = 4
+Output: ["the","is","sunny","day"]
+Explanation: "the", "is", "sunny" and "day" are the four most frequent words, with the number of occurrence being 4, 3, 2 and 1 respectively.
+ 
+
+Constraints:
+
+1 <= words.length <= 500
+1 <= words[i].length <= 10
+words[i] consists of lowercase English letters.
+k is in the range [1, The number of unique words[i]]
+ 
+
+Follow-up: Could you solve it in O(n log(k)) time and O(n) extra space?
+
+Accepted
+538.9K
+Submissions
+942.3K
+Acceptance Rate
+57.2%
+
+
+class Solution {
+public:
+    vector<string> topKFrequent(vector<string>& words, int k) {
+        unordered_map<string,int> mp;
+        unordered_map<int,vector<string>> mp_util;
+        int N = words.size();
+
+        for(int i=0; i<N; i++)  {
+            string curr = words[i];
+            mp[curr]++;
+        }
+
+        vector<int> count_util;
+        for(auto i : mp)    {
+            int cnt = i.second;
+            string str = i.first;
+
+            mp_util[cnt].push_back(str);
+        }
+
+        for(auto i : mp_util)    
+            count_util.push_back(i.first);
+
+
+        int n = count_util.size();
+        sort(count_util.begin(),count_util.end(),greater<int>());
+        for(int i=0; i<n; i++)  {
+            int cv = count_util[i];
+            sort(mp_util[cv].begin(),mp_util[cv].end());
+        }
+
+        vector<string> res;
+        for(auto i:count_util)  {
+            for(auto j : mp_util[i])    {
+                res.push_back(j);
+                if(res.size()==k)    
+                    return res;
+            }
+        } 
+        
+        return res;
+    }
+};
