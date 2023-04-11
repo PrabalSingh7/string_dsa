@@ -1,0 +1,129 @@
+2390. Removing Stars From a String
+Medium
+1.5K
+104
+Companies
+You are given a string s, which contains stars *.
+
+In one operation, you can:
+
+Choose a star in s.
+Remove the closest non-star character to its left, as well as remove the star itself.
+Return the string after all stars have been removed.
+
+Note:
+
+The input will be generated such that the operation is always possible.
+It can be shown that the resulting string will always be unique.
+ 
+
+Example 1:
+
+Input: s = "leet**cod*e"
+Output: "lecoe"
+Explanation: Performing the removals from left to right:
+- The closest character to the 1st star is 't' in "leet**cod*e". s becomes "lee*cod*e".
+- The closest character to the 2nd star is 'e' in "lee*cod*e". s becomes "lecod*e".
+- The closest character to the 3rd star is 'd' in "lecod*e". s becomes "lecoe".
+There are no more stars, so we return "lecoe".
+Example 2:
+
+Input: s = "erase*****"
+Output: ""
+Explanation: The entire string is removed, so we return an empty string.
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s consists of lowercase English letters and stars *.
+The operation above can be performed on s.
+Accepted
+82.4K
+Submissions
+115.6K
+Acceptance Rate
+71.3%
+
+
+
+
+Removing Stars From a String
+
+
+C++ || string || 2 approaches || stack || greedy
+_prabal_singh_
+100 Days Badge 2022
+15
+a few seconds ago
+Intuition
+Simple Use of Stack.
+
+Approach
+APPROACH 1 =>
+use a stack and push all non '' elements in it , AND whenever a '' element comes while traversing : just pop the top of stack . After traversal , just convert the stack into a string and return it.
+T(0) = O(N) + O(N)
+S(O) = O(N)
+
+APPROACH 2 =>
+Keep an extra sring res , just traverse the original string and put non '' elements in the string res & whenever its a '' element just pop_back the res string & and return res at end of traversal.
+T(O) = O(N)
+S(O) = O(N)
+
+download (2).jfif
+
+Complexity
+Time complexity : O(N)
+Space complexity : O(N)
+Code
+class Solution {
+public:
+// //APPRAOCH 2
+    // string removeStars(string s) {
+    //     int n = s.size();
+    //     stack<char> st;
+
+    //    //performing the stack operation
+    //     for(auto i : s) {
+    //         if(i=='*')  {
+    //             if(!st.empty())
+    //                 st.pop();
+    //         }
+    //         else 
+    //             st.push(i);
+    //     }
+
+    //    //preparing the string from stack
+    //     string res;
+    //     while(!st.empty())  {
+    //         res += st.top();
+    //         st.pop();
+    //     }
+
+    //    //reversal because the stack follows LIFO principle
+    //     reverse(res.begin(), res.end());
+    //     return res;
+    // }
+
+
+// //APPRAOCH 2
+    string removeStars(string s) {
+        string res;
+
+        for(auto i : s)  {
+            if(i=='*')      {
+                if(res.size()>0)   
+                    res.pop_back();                               
+            }
+            else 
+                res += i;
+        }
+
+       return res;
+    }
+};
+download (1).jfif
+
+0
+0
+
