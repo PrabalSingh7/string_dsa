@@ -51,42 +51,35 @@ class Solution {
 public:
     string getHint(string secret, string guess) {
         int n = secret.size();
-
-        vector<int> sec ;
-        for(auto i : secret)    {
-            sec.push_back(i-'0');
-        }
-        vector<int> gs ;
-        for(auto i : guess)    {
-            gs.push_back(i-'0');
-        }
-
         int bulls=0, cows=0;
 
-        for(int i=0; i<n; i++)  {
-            if(sec[i]==gs[i])   {
-                bulls++;
-                sec[i]=-1;
-                gs[i]=-1;
-            }
-        }
+        unordered_map<int,int> sec_mp;
+        unordered_map<int,int> gs_mp;
+        
+        for(int i=0; i<n; i++)    {
+            int s = secret[i] - '0';
+            int g = guess[i] - '0';
 
-        for(int i=0; i<n; i++)  {
-            if(sec[i]==-1)    {
+            if(s==g)    {
+                bulls++;
                 continue;
             }
             else {
-                int tf = sec[i];
-                for(int j=0; j<n; j++)  {
-                    if(gs[j]==tf )  {
-                        gs[j]=-1;
-                        cows++;
-                        sec[i]=-1;
-                        break;
-                    }
-                }
+                sec_mp[s]++;
+                gs_mp[g]++;
             }
         }
+        
+
+        for(auto i : sec_mp)    {
+            int s_val = i.first;
+            int s_freq = i.second;
+            
+            int g_freq = gs_mp[s_val];
+
+            cows += min(g_freq,s_freq);
+        }
+
 
         string res ;
         res += to_string(bulls) ;
