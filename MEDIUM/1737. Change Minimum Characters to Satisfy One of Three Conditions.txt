@@ -1,0 +1,128 @@
+1737. Change Minimum Characters to Satisfy One of Three Conditions
+Medium
+285
+306
+Companies
+You are given two strings a and b that consist of lowercase letters. In one operation, you can change any character in a or b to any lowercase letter.
+
+Your goal is to satisfy one of the following three conditions:
+
+Every letter in a is strictly less than every letter in b in the alphabet.
+Every letter in b is strictly less than every letter in a in the alphabet.
+Both a and b consist of only one distinct letter.
+Return the minimum number of operations needed to achieve your goal.
+
+ 
+
+Example 1:
+
+Input: a = "aba", b = "caa"
+Output: 2
+Explanation: Consider the best way to make each condition true:
+1) Change b to "ccc" in 2 operations, then every letter in a is less than every letter in b.
+2) Change a to "bbb" and b to "aaa" in 3 operations, then every letter in b is less than every letter in a.
+3) Change a to "aaa" and b to "aaa" in 2 operations, then a and b consist of one distinct letter.
+The best way was done in 2 operations (either condition 1 or condition 3).
+Example 2:
+
+Input: a = "dabadd", b = "cda"
+Output: 3
+Explanation: The best way is to make condition 1 true by changing b to "eee".
+ 
+
+Constraints:
+
+1 <= a.length, b.length <= 105
+a and b consist only of lowercase letters.
+Accepted
+11.5K
+Submissions
+32.5K
+Acceptance Rate
+35.4%
+
+
+
+Change Minimum Characters to Satisfy One of Three Conditions
+
+
+💻✔✨ C++ || Hash Map || Greedy Compare || Commented Code
+_prabal_singh_
+100 Days Badge 2022
+16
+a few seconds ago
+Intuition
+Approach
+find frequencies all of alphabet in both strings as mpa & mpb.
+compute the prefix sum of each alphabet for both mpa & mpb as prefixA & prefixB.
+Check making string a smaller than string b for all alphabet from 'a' to 'y', as val1.
+Check making string a larger than string b for all alphabet from 'a' to 'y', as val2.
+Check making string a eqaul to string b for all alphabet from 'a' to 'z', as val3.
+Return the min of val1, val2 and val3.
+download (1).jfif
+
+Complexity
+Time complexity : O(N)
+Space complexity : O(4*26) => O(1)
+Code
+class Solution {
+public:
+    int minCharacters(string a, string b) {
+        int n1 = a.size();
+        int n2 = b.size();
+
+        vector<int> mpa (26,0);
+        vector<int> mpb (26,0);
+
+        vector<int> prefixA, prefixB;
+
+        //finding frequency of each aplhabet in Asring & Bstring
+        for(auto i : a) 
+            mpa[i-'a']++;
+        for(auto i : b) 
+            mpb[i-'a']++;
+
+        //evaluating the prefix Sum for both mpa & mpb
+        int al=0, bl=0;
+        for(int i=0; i<26; i++) {
+            al += mpa[i];
+            bl += mpb[i];
+            prefixA.push_back(al);
+            prefixB.push_back(bl);
+        } 
+
+        //making Astring smaller than Bstring for all a->y (can't do that on z)
+        int val1 = n1+n2;
+        for(int i=0; i<25; i++) {
+            int achange = n1 - prefixA[i];
+            int bchange = prefixB[i];
+            int curr = achange + bchange; 
+            val1 = min(curr,val1);
+        } 
+
+        //making Bstring smaller than Astring for all a->y (can't do that on z)
+        int val2 = n1+n2;
+        for(int i=0; i<25; i++) {
+            int achange = prefixA[i];
+            int bchange = n2 - prefixB[i];
+            int curr = achange + bchange; 
+            val2 = min(curr,val2);
+        } 
+
+        //making Astring equal to Bstring for all a->z
+        int val3 = n1+n2;
+        for(int i=0; i<26; i++) {
+            int achange = n1 - mpa[i];
+            int bchange = n2 - mpb[i];
+            int curr = achange + bchange; 
+            val3 = min(curr,val3);
+        }
+        
+        return min(val3, min(val1,val2)); 
+    }
+};
+images.jfif
+
+0
+0
+
