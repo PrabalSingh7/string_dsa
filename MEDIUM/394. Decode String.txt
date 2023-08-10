@@ -1,0 +1,131 @@
+394. Decode String
+Medium
+11.5K
+517
+Companies
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+
+The test cases are generated so that the length of the output will never exceed 105.
+
+ 
+
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+ 
+
+Constraints:
+
+1 <= s.length <= 30
+s consists of lowercase English letters, digits, and square brackets '[]'.
+s is guaranteed to be a valid input.
+All the integers in s are in the range [1, 300].
+Accepted
+674.6K
+Submissions
+1.2M
+Acceptance Rate
+58.3%
+
+
+
+
+
+class Solution {
+public:
+
+    string getString(char x)    {
+        string s(1, x);
+        return s;  
+    }
+
+
+    string decodeString(string s) {
+        int n = s.size();
+        string res;
+
+        stack<string> st;
+
+        for(int i=0; i<n; i++)  {
+            if(s[i]==']')   {
+                vector<string> temp;
+                int f = 1;
+                while(st.size())    {
+                    if(st.top().size()==1)  {
+                        string curr = st.top();
+                        st.pop();
+                        if(curr[0]!='[')
+                            temp.push_back(curr);
+                        else if(curr[0]=='[')  {
+                            string curr = st.top();
+                            st.pop();
+                            f = stoi(curr);
+                            // if(isdigit(curr[0]))   {
+                            //     f = int(curr[0] - '0');
+                            //     st.pop();
+                            // }
+                            break;
+                        }
+                    }
+                    else {
+                        string curr = st.top();
+                        st.pop();
+                        temp.push_back(curr);
+                    }
+                }
+                
+                reverse(temp.begin(), temp.end());
+                string str;
+                for(int k=0; k<temp.size(); k++)
+                    str += temp[k];
+                string np ;
+                for(int k=0; k<f; k++)
+                    np += str;
+
+                st.push(np);
+            }
+            else {
+                if(isalpha(s[i]) || s[i]=='[')   {
+                    string hehe = getString(s[i]);
+                    st.push(hehe);
+                }                
+                else {
+                    string g ;
+                    g += s[i];
+                    int j=i+1;
+                    while(isdigit(s[j]))
+                        g += s[j++];
+                    i = j-1;
+                    // cout<<g<<" ";
+                    st.push(g);
+                }
+            }
+        }
+
+        vector<string> temp;
+        while(st.size())    {
+            string curr = st.top();
+            st.pop();
+            temp.push_back(curr);
+        }
+
+        reverse(temp.begin(), temp.end());
+        for(int k=0; k<temp.size(); k++)
+            res += temp[k];
+
+        return res;
+    }
+};
