@@ -1,0 +1,78 @@
+168. Excel Sheet Column Title
+Easy
+4.4K
+607
+Companies
+Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
+
+For example:
+
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28 
+...
+ 
+
+Example 1:
+
+Input: columnNumber = 1
+Output: "A"
+Example 2:
+
+Input: columnNumber = 28
+Output: "AB"
+Example 3:
+
+Input: columnNumber = 701
+Output: "ZY"
+ 
+
+Constraints:
+
+1 <= columnNumber <= 231 - 1
+Accepted
+417.3K
+Submissions
+1.1M
+Acceptance Rate
+37.3%
+
+
+
+class Solution {
+public:
+    typedef long long ll;
+
+    // string convertToTitle(int cn) {
+    //     string res;
+        
+    //     while(cn)   {
+    //         cn -= 1;
+    //         res += (char)('A' + (cn%26));
+    //         cn /= 26;
+    //     }
+
+    //     return res;
+    // }
+
+
+    string convertToTitle(int n) {
+
+        string res;
+        char tmp;
+
+        while(n){
+            n -= 1;
+            tmp = 'A' + n % 26;
+            res = tmp + res;
+            n /= 26;
+        }
+
+        return res;
+
+    }
+};
